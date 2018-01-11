@@ -1,5 +1,5 @@
 import pygame
-
+from PythonGameEngine.EngineClasses.UI_button import PGE_Button
 
 class UI:
     def __init__(self, screen):
@@ -11,12 +11,15 @@ class UI:
     def setup(self, *args, **kwargs):
         pass
 
-    def add(self, id, x, y):
+    def add(self, id, x, y, type='button'):
         if id not in self.images:
             return False
         pos_from_x, x, = x
         pos_from_y, y = y
-        self.interface.append([id, pos_from_x, x, pos_from_y, y])
+        if type == 'button':
+            this_button = PGE_Button(id, pos_from_x, x, pos_from_y, y)
+            self.interface.append(PGE_Button)
+            return this_button
 
     def load_sprites(self, sprite_to_id):
         for filename, tag in sprite_to_id.items():
@@ -24,7 +27,8 @@ class UI:
             self.images[tag] = sprite
 
     def render_all(self):
-        for id, pos_from_x, x, pos_from_y, y in self.interface:
+        for interface_unit in self.interface:
+            pos_from_x, x, pos_from_y, y = interface_unit.get_pos()
             if pos_from_x == 'center':
                 x = self.screen.get_width() // 2 - self.images[id].get_width() // 2 + x
             elif pos_from_x == 'right':
