@@ -126,14 +126,18 @@ if __name__ == '__main__':
                            'UI': engine.ui,
                            'UI cover': None})
 
-    image_to_id = {'Sprites/ui_bottom_interface.png': 'interface_bottom_cell'}
+    image_to_id = {'Sprites/ui_bottom_interface.png': 'interface_bottom_cell',
+                   'Sprites/ui_bottom_interface_selected.png': 'interface_bottom_cell_selected'}
     engine.ui.load_sprites(image_to_id)
-    engine.ui.add('interface_bottom_cell', ('center', 0), ('down', 5))
-    for i in range(1, 3):
-        engine.ui.add('interface_bottom_cell', ('center', i * 96), ('down', 5))
-    for i in range(1, 3):
-        engine.ui.add('interface_bottom_cell', ('center', -i * 96), ('down', 5))
 
+    engine.ui.add('interface_bottom_cell', ('center', -96*2), ('down', 5))
+    engine.ui.add('interface_bottom_cell', ('center', -96), ('down', 5))
+    engine.ui.add('interface_bottom_cell', ('center', 0), ('down', 5))
+    engine.ui.add('interface_bottom_cell', ('center', 96), ('down', 5))
+    engine.ui.add('interface_bottom_cell', ('center', 96*2), ('down', 5))
+
+    bottom_ui = engine.ui.interface
+    selected_ui = 0
 
     running = True
     fps = 60
@@ -162,6 +166,18 @@ if __name__ == '__main__':
                     res = engine.world.destroy_block(x, y)
                     if res:
                         engine.text_renderer.add('res', 'Block destroyed', -10, 10, alive_sec=1)
+                elif event.button == MOUSE_SCROLL_UP:
+                    bottom_ui[selected_ui][0] = 'interface_bottom_cell'
+                    selected_ui += 1
+                    if selected_ui == 5:
+                        selected_ui = 0
+                    bottom_ui[selected_ui][0] = 'interface_bottom_cell_selected'
+                elif event.button == MOUSE_SCROLL_DOWN:
+                    bottom_ui[selected_ui][0] = 'interface_bottom_cell'
+                    selected_ui -= 1
+                    if selected_ui == -1:
+                        selected_ui = 4
+                    bottom_ui[selected_ui][0] = 'interface_bottom_cell_selected'
             elif event.type == pygame.MOUSEBUTTONUP:
                 if event.button == MOUSE_CLICK_LEFT:
                     keypressed_create_block = False
