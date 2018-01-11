@@ -67,6 +67,7 @@ class PyGameEngine:
                 self.screen = pygame.display.set_mode(event.size, pygame.RESIZABLE)
                 self.text_renderer.render_all()
             elif event.type == pygame.MOUSEBUTTONDOWN:
+                # self.camera.look_at_block(*self.transform_screen_pos(event.pos))
                 # block = self.world.get_block(event.pos, self.camera.get_position())
                 # if block:
                 #     block_x, block_y = block.get_pos()

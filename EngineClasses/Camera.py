@@ -26,6 +26,14 @@ class Camera:
 
     def look_at_block(self, x, y):
         screen_w, screen_h = self.screen.get_width(), self.screen.get_height()
+        blocks_in_width = screen_w // BLOCK_HEIGHT
+        blocks_in_height = screen_h // BLOCK_HEIGHT
+        left_border = (x - blocks_in_width // 2) * BLOCK_HEIGHT
+        up_border = (y + blocks_in_height // 2) * BLOCK_HEIGHT
+        self.pos_x = -left_border
+        self.pos_y = up_border
+        #print(left_border, up_border)
+        print(self.get_position())
 
     def update(self, events):
         for event in events:
