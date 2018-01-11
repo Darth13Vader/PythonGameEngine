@@ -33,7 +33,6 @@ class Camera:
         self.pos_x = -left_border
         self.pos_y = up_border
         #print(left_border, up_border)
-        print(self.get_position())
 
     def update(self, events):
         for event in events:

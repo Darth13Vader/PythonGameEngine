@@ -4,6 +4,7 @@ from PythonGameEngine.EngineClasses.Exceptions import *
 from PythonGameEngine.EngineClasses.World import World
 from PythonGameEngine.EngineClasses.Camera import Camera
 from PythonGameEngine.EngineClasses.TextRenderer import TextRenderer
+from PythonGameEngine.EngineClasses.UI import UI
 from PythonGameEngine.GlobalVariables.Keys import *
 from PythonGameEngine.GlobalVariables.Constants import *
 
@@ -21,14 +22,18 @@ class PyGameEngine:
 
         self.camera = Camera(self.screen)
         self.text_renderer = TextRenderer(self.screen)
+        self.ui = UI(self.screen)
 
         self.world = World()
         self.sprites = {}
 
-        self.camera.look_at_block(0, self.world.get_level_height() + 5)
+        self.layouts = {}
 
-    def set_up(self, *args, **kwargs):
-        pass
+        self.camera.look_at_block(0, self.world.get_level_height() + 10)
+
+    def setup(self, *args, **kwargs):
+        if 'layouts' in kwargs:
+            self.layouts = kwargs['layouts']
 
     def load_sprites(self, sprite_to_id):
         for filename, tag in sprite_to_id.items():
@@ -86,9 +91,7 @@ class PyGameEngine:
                 else:
                     self.selected_coords = None
 
-    def update_all(self, events):
-        self.events_handler(events)
-        #all_sprites = pygame.sprite.Group()
+    def render_all(self):
         self.screen.fill((140, 195, 218))
         for obj in self.world.get_level():
             x, y = self.transform_block_pos(obj.get_pos())
@@ -98,7 +101,11 @@ class PyGameEngine:
             x, y = self.transform_block_pos(self.selected_coords)
             self.screen.blit(self.sprites['selected'], (x, y))
 
-        self.text_renderer.render_all()
+    def update_all(self, events):
+        self.events_handler(events)
+        for layout in self.layouts.values():
+            if layout:
+                layout.render_all()
 
         pygame.display.update()
 
@@ -112,6 +119,20 @@ if __name__ == '__main__':
                     'Sprites/selected_block_borders.png': 'selected'}
 
     engine.load_sprites(sprite_to_id)
+    engine.setup(layouts={'background': None,
+                           'world': engine,
+                           'entities': None,
+                           'Debug text': engine.text_renderer,
+                           'UI': engine.ui,
+                           'UI cover': None})
+
+    image_to_id = {'Sprites/ui_bottom_interface.png': 'interface_bottom_cell'}
+    engine.ui.load_sprites(image_to_id)
+    engine.ui.add('interface_bottom_cell', ('center', 0), ('down', 5))
+    for i in range(1, 3):
+        engine.ui.add('interface_bottom_cell', ('center', i * 96), ('down', 5))
+    for i in range(1, 3):
+        engine.ui.add('interface_bottom_cell', ('center', -i * 96), ('down', 5))
 
 
     running = True
