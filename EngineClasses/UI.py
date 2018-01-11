@@ -11,15 +11,11 @@ class UI:
     def setup(self, *args, **kwargs):
         pass
 
-    def add(self, id, x, y, type='button'):
-        if id not in self.images:
+    def add(self, interface_unit: PGE_Button):
+        if interface_unit.get_id() not in self.images:
             return False
-        pos_from_x, x, = x
-        pos_from_y, y = y
-        if type == 'button':
-            this_button = PGE_Button(id, pos_from_x, x, pos_from_y, y)
-            self.interface.append(PGE_Button)
-            return this_button
+
+        self.interface.append(interface_unit)
 
     def load_sprites(self, sprite_to_id):
         for filename, tag in sprite_to_id.items():
@@ -28,7 +24,7 @@ class UI:
 
     def render_all(self):
         for interface_unit in self.interface:
-            pos_from_x, x, pos_from_y, y = interface_unit.get_pos()
+            id, pos_from_x, x, pos_from_y, y, text = interface_unit.get_info()
             if pos_from_x == 'center':
                 x = self.screen.get_width() // 2 - self.images[id].get_width() // 2 + x
             elif pos_from_x == 'right':

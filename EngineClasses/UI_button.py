@@ -22,5 +22,14 @@ class PGE_Button:
     def on_mouse_exit(self):
         pass
 
+    def get_id(self):
+        return self.id
+
+    def set_id(self, id):
+        self.id = id
+
     def get_pos(self):
         return (self.count_from_x, self.x, self.count_from_y, self.y)
+
+    def get_info(self):
+        return self.id, self.count_from_x, self.x, self.count_from_y, self.y, self.text
