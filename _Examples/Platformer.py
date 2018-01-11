@@ -20,12 +20,12 @@ sprite_to_id = {'Sprites/grass.png': 'grass',
                 'Sprites/selected_block_borders.png': 'selected'}
 
 engine.load_sprites(sprite_to_id)
-engine.setup(layouts={'background': None,
-                       'world': engine,
-                       'entities': None,
-                       'Debug text': engine.text_renderer,
-                       'UI': engine.ui,
-                       'UI cover': None})
+engine.setup(layouts_render=[('background', None),
+                      ('world', engine),
+                      ('entities', None),
+                      ('Debug text', engine.text_renderer),
+                      ('UI', engine.ui),
+                      ('UI cover', None)])
 
 image_to_id = {'Sprites/ui_bottom_interface.png': 'interface_bottom_cell',
                'Sprites/ui_bottom_interface_selected.png': 'interface_bottom_cell_selected'}

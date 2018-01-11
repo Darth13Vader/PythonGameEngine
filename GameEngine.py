@@ -27,13 +27,13 @@ class PyGameEngine:
         self.world = World()
         self.sprites = {}
 
-        self.layouts = {}
+        self.layouts_renders = []
 
         self.camera.look_at_block(0, self.world.get_level_height() + 10)
 
     def setup(self, *args, **kwargs):
-        if 'layouts' in kwargs:
-            self.layouts = kwargs['layouts']
+        if 'layouts_render' in kwargs:
+            self.layouts_renders = kwargs['layouts_render']
 
     def load_sprites(self, sprite_to_id):
         for filename, tag in sprite_to_id.items():
@@ -103,8 +103,8 @@ class PyGameEngine:
 
     def update_all(self, events):
         self.events_handler(events)
-        for layout in self.layouts.values():
-            if layout:
-                layout.render_all()
+        for layout in self.layouts_renders:
+            if layout[1]:
+                layout[1].render_all()
 
         pygame.display.update()
