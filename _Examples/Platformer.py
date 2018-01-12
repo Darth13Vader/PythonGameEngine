@@ -16,9 +16,9 @@ engine = PyGameEngine(1280, 720, resizable=True)
 engine.world.load_level('level_1.txt')
 engine.camera.look_at_block(0, engine.world.get_level_height())
 
-sprite_to_id = {'Sprites/grass.png': 'grass',
-                'Sprites/ground_1.png': 'ground',
-                'Sprites/selected_block_borders.png': 'selected'}
+sprite_to_id = {'Sprites/myOwn/grass.png': 'grass',
+                'Sprites/myOwn/ground_1.png': 'ground',
+                'Sprites/myOwn/selected_block_borders.png': 'selected'}
 
 engine.load_sprites(sprite_to_id)
 engine.setup(layouts_render=[('background', None),
@@ -28,8 +28,8 @@ engine.setup(layouts_render=[('background', None),
                       ('UI', engine.ui),
                       ('UI cover', None)])
 
-image_to_id = {'Sprites/ui_bottom_interface.png': 'interface_bottom_cell',
-               'Sprites/ui_bottom_interface_selected.png': 'interface_bottom_cell_selected'}
+image_to_id = {'Sprites/myOwn/ui_bottom_interface.png': 'interface_bottom_cell',
+               'Sprites/myOwn/ui_bottom_interface_selected.png': 'interface_bottom_cell_selected'}
 engine.ui.load_sprites(image_to_id)
 
 bottom_ui = [Interface_button('interface_bottom_cell', 'center', -96*2, 'down', 5),
