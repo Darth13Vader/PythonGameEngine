@@ -6,7 +6,7 @@ from PythonGameEngine.GlobalVariables.Keys import *
 
 class World:
     def __init__(self):
-        self.blocks = []
+        self.blocks = {}
 
     def load_level(self, filename):
         dec_dic = {'=': 'grass',
@@ -35,26 +35,47 @@ class World:
         return self.get_block_by_pos((block_x, block_y))
 
     def get_block_by_pos(self, block_pos):
-        for obj in self.blocks:
-            if obj.pos_x == block_pos[0] and obj.pos_y == block_pos[1]:
-                return obj
+        x, y = block_pos
+        if (x, y) in self.blocks:
+            return self.blocks[(x, y)]
 
     def get_level(self):
-        return self.blocks
+        return self.blocks.values()
 
     def get_level_height(self):
-        return len(self.blocks)
+        return sorted(self.blocks.keys(), key=lambda x: x[1], reverse=True)[0][1]
+
+    def update_nearest_blocks(self, x, y):
+        if (x, y) not in self.blocks:
+            return False
+
+        nearest_blocks = []
+
+        if (x - 1, y) in self.blocks:
+            bl_left = self.blocks[(x - 1, y)]
+            nearest_blocks.append(bl_left)
+        if (x + 1, y) in self.blocks:
+            bl_right = self.blocks[(x + 1, y)]
+            nearest_blocks.append(bl_right)
+        if (x, y + 1) in self.blocks:
+            bl_up = self.blocks[(x, y + 1)]
+            nearest_blocks.append(bl_up)
+        if (x, y - 1) in self.blocks:
+            bl_down = self.blocks[(x, y - 1)]
+            nearest_blocks.append(bl_down)
+
+        return nearest_blocks
 
     def create_block(self, x, y, id):
         if self.get_block_by_pos((x, y)):
             return False
         bl = Block(x, y, id)
-        self.blocks.append(bl)
+        self.blocks[(x, y)] = bl
         return True
 
     def destroy_block(self, x, y):
         this_block = self.get_block_by_pos((x, y))
         if this_block:
-            del self.blocks[self.blocks.index(this_block)]
+            del self.blocks[(x, y)]
             return True
         return False

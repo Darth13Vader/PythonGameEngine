@@ -12,13 +12,13 @@ class LevelLoader:
         zero_x = len(level[-1]) // 2
         zero_y = len(level) - 1
 
-        blocks = []
+        blocks = {}
         for yind, row in enumerate(level):
             for xind, cell in enumerate(row):
                 if cell in decoder_dict.keys():
                     id = decoder_dict[cell]
                     this_block = Block(xind - zero_x, zero_y, id)
-                    blocks.append(this_block)
+                    blocks[(xind - zero_x, zero_y)] = this_block
                     #print('New Block: ({}, {})'.format(this_block.pos_x, this_block.pos_y))
             zero_y -= 1
         return blocks

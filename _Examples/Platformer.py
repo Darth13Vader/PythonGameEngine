@@ -14,6 +14,7 @@ from Interface_button import Interface_button
 
 engine = PyGameEngine(1280, 720, resizable=True)
 engine.world.load_level('level_1.txt')
+engine.camera.look_at_block(0, engine.world.get_level_height())
 
 sprite_to_id = {'Sprites/grass.png': 'grass',
                 'Sprites/ground_1.png': 'ground',
