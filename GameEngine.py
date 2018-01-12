@@ -90,7 +90,10 @@ class PyGameEngine:
                     self.selected_coords = None
 
     def render_all(self):
-        self.screen.fill((140, 195, 218))
+        if 'background' in self.sprites:
+            self.screen.blit(self.sprites['background'], (0, 0))
+        else:
+            self.screen.fill((140, 195, 218))
         for obj in self.world.get_level():
             x, y = self.transform_block_pos(obj.get_pos())
             self.screen.blit(self.sprites[obj.get_id()], (x, y))

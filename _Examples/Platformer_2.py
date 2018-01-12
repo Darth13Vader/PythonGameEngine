@@ -21,6 +21,7 @@ sprite_to_id = {TILES_PATH + 'grass.png': 'grass',
                 TILES_PATH + 'grassLeft.png': 'grassLeft',
                 TILES_PATH + 'grassMid.png': 'grassMid',
                 TILES_PATH + 'grassRight.png': 'grassRight',
+                'Sprites/background.png': 'background',
                 'Sprites/myOwn/selected_block_borders.png': 'selected'}
 
 dec_dic = {'=': 'grassMid',
