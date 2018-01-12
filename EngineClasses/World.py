@@ -45,6 +45,27 @@ class World:
     def get_level_height(self):
         return sorted(self.blocks.keys(), key=lambda x: x[1], reverse=True)[0][1]
 
+    def update_nearest_blocks(self, x, y):
+        if (x, y) not in self.blocks:
+            return False
+
+        nearest_blocks = []
+
+        if (x - 1, y) in self.blocks:
+            bl_left = self.blocks[(x - 1, y)]
+            nearest_blocks.append(bl_left)
+        if (x + 1, y) in self.blocks:
+            bl_right = self.blocks[(x + 1, y)]
+            nearest_blocks.append(bl_right)
+        if (x, y + 1) in self.blocks:
+            bl_up = self.blocks[(x, y + 1)]
+            nearest_blocks.append(bl_up)
+        if (x, y - 1) in self.blocks:
+            bl_down = self.blocks[(x, y - 1)]
+            nearest_blocks.append(bl_down)
+
+        return nearest_blocks
+
     def create_block(self, x, y, id):
         if self.get_block_by_pos((x, y)):
             return False
