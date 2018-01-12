@@ -42,13 +42,14 @@ image_to_id = {'Sprites/myOwn/ui_bottom_interface.png': 'interface_bottom_cell',
                'Sprites/myOwn/ui_bottom_interface_selected.png': 'interface_bottom_cell_selected'}
 engine.ui.load_sprites(image_to_id)
 
-bottom_ui = [Interface_button('interface_bottom_cell', 'center', -96*2, 'down', 5),
-             Interface_button('interface_bottom_cell', 'center', -96, 'down', 5),
+bottom_ui = [Interface_button('interface_bottom_cell', 'center', -96*2, 'down', 5, 'grass'),
+             Interface_button('interface_bottom_cell', 'center', -96, 'down', 5, 'grassCenter'),
              Interface_button('interface_bottom_cell', 'center', 0, 'down', 5),
              Interface_button('interface_bottom_cell', 'center', 96, 'down', 5),
              Interface_button('interface_bottom_cell', 'center', 96 * 2, 'down', 5)]
 
 for unit in bottom_ui:
+    unit.set_icons(engine.sprites)
     engine.ui.add(unit)
 
 selected_ui = 0
@@ -61,54 +62,72 @@ clock = pygame.time.Clock()
 keypressed_create_block = False
 keypressed_destroy_block = False
 
+keys_down = {MOUSE_CLICK_LEFT: False,
+             MOUSE_CLICK_MIDDLE: False,
+             MOUSE_CLICK_RIGHT: False,
+             MOUSE_SCROLL_UP: False,
+             MOUSE_SCROLL_DOWN: False}
+#keys_pressed = keys_down.copy()
+keys_up = keys_down.copy()
+
+mouse_pos = (0, 0)
+
 cam_coeff = 15
 
 while running:
+    # ----- reset all keys -----
+    for key, val in keys_down.items():
+        keys_down[key] = False
+        keys_up[key] = False
+    # --------------------------
     events = pygame.event.get()
     for event in events:
         if event.type == pygame.QUIT:
             running = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == MOUSE_CLICK_LEFT:
-                keypressed_create_block = True
-                x, y = engine.transform_screen_pos(event.pos)
-                res = engine.world.create_block(x, y, 'grassCenter')
-                if res:
-                    engine.text_renderer.add('res', 'Block created', -10, 10, alive_sec=1)
-            elif event.button == MOUSE_CLICK_RIGHT:
-                keypressed_destroy_block = True
-                x, y = engine.transform_screen_pos(event.pos)
-                res = engine.world.destroy_block(x, y)
-                if res:
-                    engine.text_renderer.add('res', 'Block destroyed', -10, 10, alive_sec=1)
-            elif event.button == MOUSE_SCROLL_UP:
-                bottom_ui[selected_ui].set_id('interface_bottom_cell')
-                selected_ui -= 1
-                if selected_ui == -1:
-                    selected_ui = 4
-                bottom_ui[selected_ui].set_id('interface_bottom_cell_selected')
-            elif event.button == MOUSE_SCROLL_DOWN:
-                bottom_ui[selected_ui].set_id('interface_bottom_cell')
-                selected_ui += 1
-                if selected_ui == 5:
-                    selected_ui = 0
-                bottom_ui[selected_ui].set_id('interface_bottom_cell_selected')
+            mouse_pos = event.pos
+            keys_down[event.button] = True
         elif event.type == pygame.MOUSEBUTTONUP:
-            if event.button == MOUSE_CLICK_LEFT:
-                keypressed_create_block = False
-            elif event.button == MOUSE_CLICK_RIGHT:
-                keypressed_destroy_block = False
+            mouse_pos = event.pos
+            keys_up[event.button] = True
         elif event.type == pygame.MOUSEMOTION:
-            if keypressed_create_block:
-                x, y = engine.transform_screen_pos(event.pos)
-                res = engine.world.create_block(x, y, 'grassCenter')
-                if res:
-                    engine.text_renderer.add('res', 'Block created', -10, 10, alive_sec=1)
-            elif keypressed_destroy_block:
-                x, y = engine.transform_screen_pos(event.pos)
-                res = engine.world.destroy_block(x, y)
-                if res:
-                    engine.text_renderer.add('res', 'Block destroyed', -10, 10, alive_sec=1)
+            mouse_pos = event.pos
+
+
+    if keys_down[MOUSE_CLICK_LEFT]:
+        keypressed_create_block = True
+    if keys_down[MOUSE_CLICK_RIGHT]:
+        keypressed_destroy_block = True
+    if keys_down[MOUSE_SCROLL_UP]:
+        bottom_ui[selected_ui].set_id('interface_bottom_cell')
+        selected_ui -= 1
+        if selected_ui == -1:
+            selected_ui = 4
+        bottom_ui[selected_ui].set_id('interface_bottom_cell_selected')
+    if keys_down[MOUSE_SCROLL_DOWN]:
+        bottom_ui[selected_ui].set_id('interface_bottom_cell')
+        selected_ui += 1
+        if selected_ui == 5:
+            selected_ui = 0
+        bottom_ui[selected_ui].set_id('interface_bottom_cell_selected')
+
+    if keys_up[MOUSE_CLICK_LEFT]:
+        keypressed_create_block = False
+    if keys_up[MOUSE_CLICK_RIGHT]:
+        keypressed_destroy_block = False
+
+    if keypressed_create_block:
+        x, y = engine.transform_screen_pos(mouse_pos)
+        tag = bottom_ui[selected_ui].get_selected_block_tag()
+        if tag != '':
+            res = engine.world.create_block(x, y, tag)
+            if res:
+                engine.text_renderer.add('res', 'Block created', -10, 10, alive_sec=1)
+    elif keypressed_destroy_block:
+        x, y = engine.transform_screen_pos(mouse_pos)
+        res = engine.world.destroy_block(x, y)
+        if res:
+            engine.text_renderer.add('res', 'Block destroyed', -10, 10, alive_sec=1)
 
     engine.camera.update(events)
     engine.update_all(events)

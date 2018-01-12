@@ -38,11 +38,7 @@ class PGE_Button:
     def get_info(self):
         return self.id, self.count_from_x, self.x, self.count_from_y, self.y, self.text
 
-    def update(self):
-        self.render_self()
-        self.render_other()
-
-    def render_self(self):
+    def get_coordinates(self):
         if self.count_from_x == 'center':
             x = self.screen.get_width() // 2 - self.images[self.id].get_width() // 2 + self.x
         elif self.count_from_x == 'right':
@@ -61,6 +57,18 @@ class PGE_Button:
         else:
             y = self.y
 
+        return x, y
+
+    def update(self):
+        self.render_background()
+        self.render_self()
+        self.render_other()
+
+    def render_background(self):
+        pass
+
+    def render_self(self):
+        x, y = self.get_coordinates()
         self.screen.blit(self.images[self.id], (x, y))
 
     def render_other(self):

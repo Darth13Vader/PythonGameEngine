@@ -68,6 +68,7 @@ class PyGameEngine:
         for event in events:
             if event.type == pygame.RESIZABLE:
                 self.screen = pygame.display.set_mode(event.size, pygame.RESIZABLE)
+                self.sprites['background'] = pygame.transform.scale(self.sprites['background'], (event.size))
                 self.text_renderer.render_all()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 # self.camera.look_at_block(*self.transform_screen_pos(event.pos))
