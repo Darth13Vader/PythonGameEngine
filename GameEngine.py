@@ -29,8 +29,6 @@ class PyGameEngine:
 
         self.layouts_renders = []
 
-        self.camera.look_at_block(0, self.world.get_level_height() + 10)
-
     def setup(self, *args, **kwargs):
         if 'layouts_render' in kwargs:
             self.layouts_renders = kwargs['layouts_render']
