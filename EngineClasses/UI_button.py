@@ -39,11 +39,10 @@ class PGE_Button:
         return self.id, self.count_from_x, self.x, self.count_from_y, self.y, self.text
 
     def update(self):
-        pass
+        self.render_self()
+        self.render_other()
 
-    def render(self):
-        self.update()
-
+    def render_self(self):
         if self.count_from_x == 'center':
             x = self.screen.get_width() // 2 - self.images[self.id].get_width() // 2 + self.x
         elif self.count_from_x == 'right':
@@ -63,3 +62,7 @@ class PGE_Button:
             y = self.y
 
         self.screen.blit(self.images[self.id], (x, y))
+
+    def render_other(self):
+        pass
+

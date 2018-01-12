@@ -24,4 +24,4 @@ class UI:
 
     def render_all(self):
         for interface_unit in self.interface:
-            interface_unit.render()
+            interface_unit.update()
