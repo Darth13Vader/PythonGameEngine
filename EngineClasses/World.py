@@ -8,9 +8,7 @@ class World:
     def __init__(self):
         self.blocks = {}
 
-    def load_level(self, filename):
-        dec_dic = {'=': 'grass',
-                   '-': 'ground'}
+    def load_level(self, filename, dec_dic):
         try:
             level_loader = LevelLoader()
             self.blocks = level_loader.load(filename, dec_dic)
