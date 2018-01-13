@@ -26,12 +26,18 @@ sprite_to_id = {TILES_PATH + 'grass.png': 'grass',
                 TILES_PATH + 'stoneLeft.png': 'stoneLeft',
                 TILES_PATH + 'stoneMid.png': 'stoneMid',
                 TILES_PATH + 'stoneRight.png': 'stoneRight',
+                TILES_PATH + 'castle.png': 'castle',
+                TILES_PATH + 'castleCenter.png': 'castleCenter',
+                TILES_PATH + 'castleLeft.png': 'castleLeft',
+                TILES_PATH + 'castleMid.png': 'castleMid',
+                TILES_PATH + 'castleRight.png': 'castleRight',
                 'Sprites/background.png': 'background',
                 'Sprites/myOwn/selected_block_borders.png': 'selected'}
 
 # Family tag - tag
 update_params = {'grass': {'0000': 'grass', '100x': 'grassRight', '010x': 'grassLeft', '110x': 'grassMid', 'other': 'grassCenter'},
-                 'stone': {'0000': 'stone', '100x': 'stoneRight', '010x': 'stoneLeft', '110x': 'stoneMid', 'other': 'stoneCenter'}}
+                 'stone': {'0000': 'stone', '100x': 'stoneRight', '010x': 'stoneLeft', '110x': 'stoneMid', 'other': 'stoneCenter'},
+                 'castle': {'0000': 'castle', '100x': 'castleRight', '010x': 'castleLeft', '110x': 'castleMid', 'other': 'castleCenter'}}
 dec_dic = {'=': 'grass',
            '-': 'stone'}
 
@@ -55,7 +61,7 @@ engine.ui.load_sprites(image_to_id)
 
 bottom_ui = [Interface_button('interface_bottom_cell', 'center', -96*2, 'down', 5, 'grass', 'grass'),
              Interface_button('interface_bottom_cell', 'center', -96, 'down', 5, 'stone', 'stone'),
-             Interface_button('interface_bottom_cell', 'center', 0, 'down', 5),
+             Interface_button('interface_bottom_cell', 'center', 0, 'down', 5, 'castle', 'castle'),
              Interface_button('interface_bottom_cell', 'center', 96, 'down', 5),
              Interface_button('interface_bottom_cell', 'center', 96 * 2, 'down', 5)]
 
