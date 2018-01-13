@@ -13,7 +13,7 @@ from PythonGameEngine.GlobalVariables.Constants import *
 from Interface_button import Interface_button
 
 engine = PyGameEngine(1280, 720, resizable=True)
-engine.world.load_level('level_1.txt')
+engine.world.load_level('level_1.txt', {'=': 'grass', '-': 'ground'})
 engine.camera.look_at_block(0, engine.world.get_level_height())
 
 sprite_to_id = {'Sprites/myOwn/grass.png': 'grass',
