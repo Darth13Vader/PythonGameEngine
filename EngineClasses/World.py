@@ -20,6 +20,7 @@ class World:
             print('PGE.load_level ERROR:', e.args)
 
     def save_level(self, dec_dict, filename=''):
+        print('Saving...')
         level_manager = LevelManager()
         level_manager.save(self.blocks, dec_dict)
 

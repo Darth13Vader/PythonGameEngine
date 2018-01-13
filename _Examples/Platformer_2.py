@@ -156,12 +156,13 @@ while running:
         x, y = engine.transform_screen_pos(mouse_pos)
         res = engine.world.destroy_block(x, y)
         if res:
-            engine.text_renderer.add('res', 'Block destroyed', -10, 10, alive_sec=1)
+            engine.text_renderer.add('res', 'Block destroyed', -20, 10, alive_sec=1)
             nearest_blocks = engine.world.get_nearest_blocks(x, y)
             for nearest in nearest_blocks:
                 if nearest:
                     engine.world.update_block(*nearest.get_pos())
 
+    engine.text_renderer.add('fps', str(int(clock.get_fps())), -10, 10)
     engine.camera.update(events)
     engine.update_all(events)
     clock.tick(fps)
