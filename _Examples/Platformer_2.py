@@ -38,10 +38,15 @@ sprite_to_id = {TILES_PATH + 'grass.png': 'grass',
 update_params = {'grass': {'0000': 'grass', '100x': 'grassRight', '010x': 'grassLeft', '110x': 'grassMid', 'other': 'grassCenter'},
                  'stone': {'0000': 'stone', '100x': 'stoneRight', '010x': 'stoneLeft', '110x': 'stoneMid', 'other': 'stoneCenter'},
                  'castle': {'0000': 'castle', '100x': 'castleRight', '010x': 'castleLeft', '110x': 'castleMid', 'other': 'castleCenter'}}
-dec_dic = {'=': 'grass',
-           '-': 'stone'}
+encoder_dic = {'=': 'grass',
+           '-': 'stone',
+           '*': 'castle'}
 
-engine.world.load_level('level_1.txt', dec_dic)
+decoder_dict = {}
+for key, val in encoder_dic.items():
+    decoder_dict[val] = key
+
+engine.world.load_level('recently.txt', encoder_dic)
 engine.world.set_update_params(update_params)
 engine.world.update_all_level()
 engine.camera.look_at_block(0, engine.world.get_level_height())
@@ -100,6 +105,7 @@ while running:
     events = pygame.event.get()
     for event in events:
         if event.type == pygame.QUIT:
+            engine.world.save_level(decoder_dict)
             running = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
             mouse_pos = event.pos

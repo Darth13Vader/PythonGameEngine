@@ -1,5 +1,5 @@
 from PythonGameEngine.GameClasses.Block import *
-from PythonGameEngine.EngineClasses.LevelLoader import LevelLoader
+from PythonGameEngine.EngineClasses.LevelManager import LevelManager
 from PythonGameEngine.GlobalVariables.Constants import *
 from PythonGameEngine.GlobalVariables.Keys import *
 
@@ -14,10 +14,14 @@ class World:
 
     def load_level(self, filename, dec_dic):
         try:
-            level_loader = LevelLoader()
-            self.blocks = level_loader.load(filename, dec_dic)
+            level_manager = LevelManager()
+            self.blocks = level_manager.load(filename, dec_dic)
         except Exception as e:
             print('PGE.load_level ERROR:', e.args)
+
+    def save_level(self, dec_dict, filename=''):
+        level_manager = LevelManager()
+        level_manager.save(self.blocks, dec_dict)
 
     def get_block(self, mouse_pos, camera_pos) -> Block:
         pos_x, pos_y = mouse_pos
