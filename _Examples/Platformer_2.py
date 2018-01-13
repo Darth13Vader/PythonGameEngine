@@ -24,13 +24,23 @@ sprite_to_id = {TILES_PATH + 'grass.png': 'grass',
                 'Sprites/background.png': 'background',
                 'Sprites/myOwn/selected_block_borders.png': 'selected'}
 
-dec_dic = {'=': 'grassMid',
-           '-': 'grassCenter'}
+# Family tag - tag
+ld = {'0000': 'grass', '1000': 'grassRight', '0100': 'grassLeft', '1100': 'grassMid', 'other': 'grassCenter'}
+update_params = {'grass': {'0000': 'grass',
+                           '100x': 'grassRight',
+                           '010x': 'grassLeft',
+                           '110x': 'grassMid',
+                           'other': 'grassCenter'}}
+dec_dic = {'=': 'grass',
+           '-': 'grass'}
 
 engine.world.load_level('level_1.txt', dec_dic)
+engine.world.set_update_params(update_params)
+engine.world.update_all_level()
 engine.camera.look_at_block(0, engine.world.get_level_height())
 
 engine.load_sprites(sprite_to_id)
+engine.world.set_update_params(update_params)
 engine.setup(layouts_render=[('background', None),
                       ('world', engine),
                       ('entities', None),
@@ -42,8 +52,8 @@ image_to_id = {'Sprites/myOwn/ui_bottom_interface.png': 'interface_bottom_cell',
                'Sprites/myOwn/ui_bottom_interface_selected.png': 'interface_bottom_cell_selected'}
 engine.ui.load_sprites(image_to_id)
 
-bottom_ui = [Interface_button('interface_bottom_cell', 'center', -96*2, 'down', 5, 'grass'),
-             Interface_button('interface_bottom_cell', 'center', -96, 'down', 5, 'grassCenter'),
+bottom_ui = [Interface_button('interface_bottom_cell', 'center', -96*2, 'down', 5, 'grass', 'grass'),
+             Interface_button('interface_bottom_cell', 'center', -96, 'down', 5, 'grassCenter', 'grass'),
              Interface_button('interface_bottom_cell', 'center', 0, 'down', 5),
              Interface_button('interface_bottom_cell', 'center', 96, 'down', 5),
              Interface_button('interface_bottom_cell', 'center', 96 * 2, 'down', 5)]
@@ -118,11 +128,17 @@ while running:
 
     if keypressed_create_block:
         x, y = engine.transform_screen_pos(mouse_pos)
-        tag = bottom_ui[selected_ui].get_selected_block_tag()
+        tag, family = bottom_ui[selected_ui].get_selected_block_info()
+        #print(tag, family)
         if tag != '':
-            res = engine.world.create_block(x, y, tag)
-            if res:
+            cr_block = engine.world.create_block(x, y, tag, family)
+            if cr_block:
                 engine.text_renderer.add('res', 'Block created', -10, 10, alive_sec=1)
+                nearest_blocks = engine.world.get_nearest_blocks(x, y)
+                engine.world.update_block(*cr_block.get_pos())
+                for nearest in nearest_blocks:
+                    if nearest:
+                        engine.world.update_block(*nearest.get_pos())
     elif keypressed_destroy_block:
         x, y = engine.transform_screen_pos(mouse_pos)
         res = engine.world.destroy_block(x, y)

@@ -98,7 +98,7 @@ class PyGameEngine:
             self.screen.fill((140, 195, 218))
         for obj in self.world.get_level():
             x, y = self.transform_block_pos(obj.get_pos())
-            self.screen.blit(self.sprites[obj.get_id()], (x, y))
+            self.screen.blit(self.sprites[obj.get_tag()], (x, y))
 
         if self.selected_coords:
             x, y = self.transform_block_pos(self.selected_coords)

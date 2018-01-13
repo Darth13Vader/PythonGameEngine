@@ -17,7 +17,7 @@ class LevelLoader:
             for xind, cell in enumerate(row):
                 if cell in decoder_dict.keys():
                     id = decoder_dict[cell]
-                    this_block = Block(xind - zero_x, zero_y, id)
+                    this_block = Block(xind - zero_x, zero_y, id, id)
                     blocks[(xind - zero_x, zero_y)] = this_block
                     #print('New Block: ({}, {})'.format(this_block.pos_x, this_block.pos_y))
             zero_y -= 1
