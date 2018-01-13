@@ -41,7 +41,7 @@ update_params = {'grass': {'0000': 'grass', '100x': 'grassRight', '010x': 'grass
 dec_dic = {'=': 'grass',
            '-': 'stone'}
 
-engine.world.load_level('level_1.txt', dec_dic)
+engine.world.load_level('recently.txt', dec_dic)
 engine.world.set_update_params(update_params)
 engine.world.update_all_level()
 engine.camera.look_at_block(0, engine.world.get_level_height())
@@ -140,7 +140,7 @@ while running:
         if tag != '':
             cr_block = engine.world.create_block(x, y, tag, family)
             if cr_block:
-                engine.text_renderer.add('res', 'Block created', -10, 10, alive_sec=1)
+                engine.text_renderer.add('res', 'Block created', -10, 20, alive_sec=1)
                 nearest_blocks = engine.world.get_nearest_blocks(x, y)
                 engine.world.update_block(*cr_block.get_pos())
                 for nearest in nearest_blocks:
