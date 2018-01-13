@@ -21,18 +21,19 @@ sprite_to_id = {TILES_PATH + 'grass.png': 'grass',
                 TILES_PATH + 'grassLeft.png': 'grassLeft',
                 TILES_PATH + 'grassMid.png': 'grassMid',
                 TILES_PATH + 'grassRight.png': 'grassRight',
+                TILES_PATH + 'stone.png': 'stone',
+                TILES_PATH + 'stoneCenter.png': 'stoneCenter',
+                TILES_PATH + 'stoneLeft.png': 'stoneLeft',
+                TILES_PATH + 'stoneMid.png': 'stoneMid',
+                TILES_PATH + 'stoneRight.png': 'stoneRight',
                 'Sprites/background.png': 'background',
                 'Sprites/myOwn/selected_block_borders.png': 'selected'}
 
 # Family tag - tag
-ld = {'0000': 'grass', '1000': 'grassRight', '0100': 'grassLeft', '1100': 'grassMid', 'other': 'grassCenter'}
-update_params = {'grass': {'0000': 'grass',
-                           '100x': 'grassRight',
-                           '010x': 'grassLeft',
-                           '110x': 'grassMid',
-                           'other': 'grassCenter'}}
+update_params = {'grass': {'0000': 'grass', '100x': 'grassRight', '010x': 'grassLeft', '110x': 'grassMid', 'other': 'grassCenter'},
+                 'stone': {'0000': 'stone', '100x': 'stoneRight', '010x': 'stoneLeft', '110x': 'stoneMid', 'other': 'stoneCenter'}}
 dec_dic = {'=': 'grass',
-           '-': 'grass'}
+           '-': 'stone'}
 
 engine.world.load_level('level_1.txt', dec_dic)
 engine.world.set_update_params(update_params)
@@ -53,7 +54,7 @@ image_to_id = {'Sprites/myOwn/ui_bottom_interface.png': 'interface_bottom_cell',
 engine.ui.load_sprites(image_to_id)
 
 bottom_ui = [Interface_button('interface_bottom_cell', 'center', -96*2, 'down', 5, 'grass', 'grass'),
-             Interface_button('interface_bottom_cell', 'center', -96, 'down', 5, 'grassCenter', 'grass'),
+             Interface_button('interface_bottom_cell', 'center', -96, 'down', 5, 'stone', 'stone'),
              Interface_button('interface_bottom_cell', 'center', 0, 'down', 5),
              Interface_button('interface_bottom_cell', 'center', 96, 'down', 5),
              Interface_button('interface_bottom_cell', 'center', 96 * 2, 'down', 5)]
@@ -144,6 +145,10 @@ while running:
         res = engine.world.destroy_block(x, y)
         if res:
             engine.text_renderer.add('res', 'Block destroyed', -10, 10, alive_sec=1)
+            nearest_blocks = engine.world.get_nearest_blocks(x, y)
+            for nearest in nearest_blocks:
+                if nearest:
+                    engine.world.update_block(*nearest.get_pos())
 
     engine.camera.update(events)
     engine.update_all(events)

@@ -48,8 +48,8 @@ class World:
         return sorted(self.blocks.keys(), key=lambda x: x[1], reverse=True)[0][1]
 
     def get_nearest_blocks(self, x, y) -> (Block, Block, Block, Block):
-        if (x, y) not in self.blocks:
-            return False
+        # if (x, y) not in self.blocks:
+        #     return False
 
         if (x - 1, y) in self.blocks:
             bl_left = self.blocks[(x - 1, y)]
