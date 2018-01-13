@@ -156,6 +156,7 @@ while running:
                 if nearest:
                     engine.world.update_block(*nearest.get_pos())
 
+    engine.text_renderer.add('fps', str(int(clock.get_fps())), -10, 10)
     engine.camera.update(events)
     engine.update_all(events)
     clock.tick(fps)
