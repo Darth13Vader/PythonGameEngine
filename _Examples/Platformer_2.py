@@ -31,8 +31,9 @@ sprite_to_id = {TILES_PATH + 'grass.png': 'grass',
                 TILES_PATH + 'castleLeft.png': 'castleLeft',
                 TILES_PATH + 'castleMid.png': 'castleMid',
                 TILES_PATH + 'castleRight.png': 'castleRight',
-                'Sprites/background.png': 'background',
                 'Sprites/myOwn/selected_block_borders.png': 'selected'}
+
+# 'Sprites/background.png': 'background',
 
 # Family tag - tag
 update_params = {'grass': {'0000': 'grass', '100x': 'grassRight', '010x': 'grassLeft', '110x': 'grassMid', 'other': 'grassCenter'},
