@@ -38,10 +38,15 @@ sprite_to_id = {TILES_PATH + 'grass.png': 'grass',
 update_params = {'grass': {'0000': 'grass', '100x': 'grassRight', '010x': 'grassLeft', '110x': 'grassMid', 'other': 'grassCenter'},
                  'stone': {'0000': 'stone', '100x': 'stoneRight', '010x': 'stoneLeft', '110x': 'stoneMid', 'other': 'stoneCenter'},
                  'castle': {'0000': 'castle', '100x': 'castleRight', '010x': 'castleLeft', '110x': 'castleMid', 'other': 'castleCenter'}}
-dec_dic = {'=': 'grass',
-           '-': 'stone'}
+encoder_dic = {'=': 'grass',
+           '-': 'stone',
+           '*': 'castle'}
 
-engine.world.load_level('recently.txt', dec_dic)
+decoder_dict = {}
+for key, val in encoder_dic.items():
+    decoder_dict[val] = key
+
+engine.world.load_level('recently.txt', encoder_dic)
 engine.world.set_update_params(update_params)
 engine.world.update_all_level()
 engine.camera.look_at_block(0, engine.world.get_level_height())
@@ -100,6 +105,7 @@ while running:
     events = pygame.event.get()
     for event in events:
         if event.type == pygame.QUIT:
+            engine.world.save_level(decoder_dict)
             running = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
             mouse_pos = event.pos
@@ -140,7 +146,7 @@ while running:
         if tag != '':
             cr_block = engine.world.create_block(x, y, tag, family)
             if cr_block:
-                engine.text_renderer.add('res', 'Block created', -10, 20, alive_sec=1)
+                engine.text_renderer.add('res', 'Block created', -10, 40, alive_sec=1)
                 nearest_blocks = engine.world.get_nearest_blocks(x, y)
                 engine.world.update_block(*cr_block.get_pos())
                 for nearest in nearest_blocks:
@@ -150,7 +156,7 @@ while running:
         x, y = engine.transform_screen_pos(mouse_pos)
         res = engine.world.destroy_block(x, y)
         if res:
-            engine.text_renderer.add('res', 'Block destroyed', -10, 10, alive_sec=1)
+            engine.text_renderer.add('res', 'Block destroyed', -20, 40, alive_sec=1)
             nearest_blocks = engine.world.get_nearest_blocks(x, y)
             for nearest in nearest_blocks:
                 if nearest:
