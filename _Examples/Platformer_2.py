@@ -59,7 +59,10 @@ engine.setup(layouts_render=[('background', None),
                       ('entities', None),
                       ('Debug text', engine.text_renderer),
                       ('UI', engine.ui),
-                      ('UI cover', None)])
+                      ('UI cover', None)],
+             layouts_rays=[('UI cover', None),
+                           ('UI', engine.ui),
+                           ('entities', None)])
 
 image_to_id = {'Sprites/myOwn/ui_bottom_interface.png': 'interface_bottom_cell',
                'Sprites/myOwn/ui_bottom_interface_selected.png': 'interface_bottom_cell_selected'}
@@ -103,7 +106,7 @@ while running:
         keys_down[key] = False
         keys_up[key] = False
     # --------------------------
-    events = pygame.event.get()
+    events = engine.input.events
     for event in events:
         if event.type == pygame.QUIT:
             engine.world.save_level(decoder_dict)
@@ -164,6 +167,6 @@ while running:
                     engine.world.update_block(*nearest.get_pos())
 
     engine.text_renderer.add('fps', str(int(clock.get_fps())), -10, 10)
-    engine.camera.update(events)
+    engine.camera.update()
     engine.update_all(events)
     clock.tick(fps)

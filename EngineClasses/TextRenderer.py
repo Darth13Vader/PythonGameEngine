@@ -1,8 +1,9 @@
 import pygame, time
+from GameEngine import PyGameEngine
 
 class TextRenderer:
-    def __init__(self, screen):
-        self.screen = screen
+    def __init__(self, engine: PyGameEngine):
+        self.engine = engine
         self.all_labels = {}
         self.font = pygame.font.Font(None, 40)
 
@@ -19,12 +20,12 @@ class TextRenderer:
                     continue
             x, y = pos
             text_w, text_h = text.get_width(), text.get_height()
-            scr_w, scr_h = self.screen.get_width(), self.screen.get_height()
+            scr_w, scr_h = self.engine.screen_w, self.engine.screen_h
             if pos[0] < 0:
                 x = scr_w - text_w + x
             if pos[1] < 0:
                 y = scr_h - text_h + y
-            self.screen.blit(text, (x, y))
+            self.engine.screen.blit(text, (x, y))
 
         for id in id_to_delete:
             self.del_label(id)

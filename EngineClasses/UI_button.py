@@ -1,8 +1,9 @@
 import pygame
 
 
-class PGE_Button:
+class PGE_Button(pygame.sprite.Sprite):
     def __init__(self, id, count_from_x, screen_x, count_from_y, screen_y, text=''):
+        super().__init__()
         self.id = id                        # self image id
         self.count_from_x = count_from_x    # Position on screen - right / center / left
         self.x = screen_x                   # Horizontal in pixels
